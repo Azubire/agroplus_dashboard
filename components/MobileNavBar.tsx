@@ -28,6 +28,7 @@ const MobileNavBar = ({ onOpen, ...rest }: MobileProps) => {
       px={{ base: 4, md: 4 }}
       height="20"
       position="sticky"
+      zIndex={1}
       top={0}
       alignItems="center"
       bg={useColorModeValue("white", "gray.900")}

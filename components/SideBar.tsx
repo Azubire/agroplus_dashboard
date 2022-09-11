@@ -22,6 +22,7 @@ import {
 } from "react-icons/fi";
 import { IconType } from "react-icons";
 import NavItem from "./NavItem";
+import { useRouter } from "next/router";
 
 interface LinkItemProps {
   name: string;
@@ -46,6 +47,8 @@ interface SidebarProps extends BoxProps {
 }
 
 function SideBar({ onClose, ...rest }: SidebarProps) {
+  const route = useRouter();
+
   return (
     <Box
       transition="3s ease"
@@ -64,7 +67,7 @@ function SideBar({ onClose, ...rest }: SidebarProps) {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon} to={link.to}>
+        <NavItem key={link.name} icon={link.icon} to={link.to} route={route}>
           {link.name}
         </NavItem>
       ))}
