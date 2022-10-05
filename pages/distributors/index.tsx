@@ -31,6 +31,17 @@ interface IDistributors {
 }
 
 const Distributors: NextPage<IDistributors> = ({ data }) => {
+  const deleteDistributor = async (id: number) => {
+    try {
+      const { data } = await (
+        await fetch(`http://localhost:3001/admin/distributor/delete/${id}`, {
+          method: "delete",
+        })
+      ).json();
+
+      console.log(data);
+    } catch (error) {}
+  };
   return (
     <Box>
       <TableContainer>
@@ -69,7 +80,10 @@ const Distributors: NextPage<IDistributors> = ({ data }) => {
                 <Td>{item.createdAt}</Td>
                 <Td>
                   <HStack justifyContent="center">
-                    <IconButton aria-label="delete advert">
+                    <IconButton
+                      aria-label="delete advert"
+                      onClick={() => deleteDistributor(item.id)}
+                    >
                       <FiDelete color="red" />
                     </IconButton>
                   </HStack>

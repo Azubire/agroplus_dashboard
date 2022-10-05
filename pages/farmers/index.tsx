@@ -30,6 +30,17 @@ interface IFarmers {
 }
 
 const Farmers: NextPage<IFarmers> = ({ data }) => {
+  const deleteFarmer = async (id: number) => {
+    try {
+      const { data } = await (
+        await fetch(`http://localhost:3001/admin/farmer/delete/${id}`, {
+          method: "delete",
+        })
+      ).json();
+
+      console.log(data);
+    } catch (error) {}
+  };
   return (
     <Box>
       {data.length > 0 ? (
@@ -65,7 +76,10 @@ const Farmers: NextPage<IFarmers> = ({ data }) => {
                   <Td>{item.createdAt}</Td>
                   <Td>
                     <HStack justifyContent="center">
-                      <IconButton aria-label="delete advert">
+                      <IconButton
+                        aria-label="delete advert"
+                        onClick={() => deleteFarmer(item.id)}
+                      >
                         <FiDelete color="red" />
                       </IconButton>
                     </HStack>

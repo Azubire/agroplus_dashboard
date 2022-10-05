@@ -34,6 +34,23 @@ interface IAds {
 }
 
 const Ads: NextPage<IAds> = ({ data }) => {
+  const [refresh, setRefresh] = React.useState(false);
+
+  const deleteAd = async (id: number) => {
+    try {
+      const { data } = await (
+        await fetch(`http://localhost:3001/admin/ad/delete/${id}`, {
+          method: "delete",
+        })
+      ).json();
+      if (data) {
+        setRefresh(true);
+      }
+      console.log(data);
+    } catch (error) {}
+  };
+
+  React.useEffect(() => {}, [refresh]);
   return (
     <Box>
       <TableContainer>
@@ -71,7 +88,10 @@ const Ads: NextPage<IAds> = ({ data }) => {
                 <Td>{item.createdAt}</Td>
                 <Td>
                   <HStack justifyContent="center">
-                    <IconButton aria-label="delete advert">
+                    <IconButton
+                      aria-label="delete advert"
+                      onClick={() => deleteAd(item.id)}
+                    >
                       <FiDelete color="red" />
                     </IconButton>
                   </HStack>

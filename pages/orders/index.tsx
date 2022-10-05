@@ -17,7 +17,7 @@ import { GetServerSideProps, NextPage } from "next";
 import React from "react";
 import { FiDelete } from "react-icons/fi";
 
-interface IOrders {
+export interface IOrders {
   data: {
     id: number;
     orderCode: string;
@@ -36,6 +36,17 @@ interface IOrders {
 }
 
 const Orders: NextPage<IOrders> = ({ data }) => {
+  const deleteOrder = async (id: number) => {
+    try {
+      const { data } = await (
+        await fetch(`http://localhost:3001/admin/order/delete/${id}`, {
+          method: "delete",
+        })
+      ).json();
+
+      console.log(data);
+    } catch (error) {}
+  };
   return (
     <Box>
       {data.length > 0 ? (
@@ -68,7 +79,10 @@ const Orders: NextPage<IOrders> = ({ data }) => {
                   <Td>{item.createdAt}</Td>
                   <Td>
                     <HStack justifyContent="center">
-                      <IconButton aria-label="delete advert">
+                      <IconButton
+                        aria-label="delete advert"
+                        onClick={() => deleteOrder(item.id)}
+                      >
                         <FiDelete color="red" />
                       </IconButton>
                     </HStack>
