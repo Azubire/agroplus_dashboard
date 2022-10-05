@@ -37,7 +37,7 @@ const Ads: NextPage<IAds> = ({ data }) => {
   return (
     <Box>
       <TableContainer>
-        <Table variant="simple">
+        <Table variant="simple" size="sm">
           <TableCaption>List of all orders</TableCaption>
           <Thead>
             <Tr>

@@ -11,8 +11,10 @@ import {
   HStack,
   IconButton,
   Tfoot,
+  Text,
 } from "@chakra-ui/react";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
+import Image from "next/image";
 import React from "react";
 import { FiDelete } from "react-icons/fi";
 
@@ -24,58 +26,87 @@ interface IFarmers {
     email: string;
     accountBalance: number;
     createdAt: string;
-  };
+  }[];
 }
 
 const Farmers: NextPage<IFarmers> = ({ data }) => {
   return (
     <Box>
-      <TableContainer>
-        <Table variant="simple">
-          <TableCaption>List of all farmers</TableCaption>
-          <Thead>
-            <Tr>
-              <Th>#</Th>
-              <Th>Image</Th>
-              <Th>name</Th>
-              <Th>email</Th>
-              <Th>account balance</Th>
-              <Th>Date Created</Th>
-              <Th>Options</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            <Tr>
-              <Td>1</Td>
-              <Td>img</Td>
-              <Td>Azubire Peter</Td>
-              <Td>agroplus@gmail.com</Td>
-              <Td>251.00</Td>
-              <Td>02 Oct 2022</Td>
-              <Td>
-                <HStack justifyContent="center">
-                  <IconButton aria-label="delete advert">
-                    <FiDelete color="red" />
-                  </IconButton>
-                </HStack>
-              </Td>
-            </Tr>
-          </Tbody>
-          <Tfoot>
-            <Tr>
-              <Th>#</Th>
-              <Th>Image</Th>
-              <Th>name</Th>
-              <Th>email</Th>
-              <Th>account balance</Th>
-              <Th>Date Created</Th>
-              <Th>Options</Th>
-            </Tr>
-          </Tfoot>
-        </Table>
-      </TableContainer>
+      {data.length > 0 ? (
+        <TableContainer>
+          <Table variant="simple" size="sm">
+            <TableCaption>List of all farmers</TableCaption>
+            <Thead>
+              <Tr>
+                <Th>#</Th>
+                <Th>Image</Th>
+                <Th>name</Th>
+                <Th>email</Th>
+                <Th>account balance</Th>
+                <Th>Date Created</Th>
+                <Th>Options</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {data.map((item, index) => (
+                <Tr key={item.id}>
+                  <Td>{index + 1}</Td>
+                  <Td>
+                    <Image
+                      src={`http://localhost:3001/images/users/${item.img}`}
+                      alt={item.name}
+                      height={40}
+                      width={40}
+                    />
+                  </Td>
+                  <Td>{item.name}</Td>
+                  <Td>{item.email}</Td>
+                  <Td>{item.accountBalance}</Td>
+                  <Td>{item.createdAt}</Td>
+                  <Td>
+                    <HStack justifyContent="center">
+                      <IconButton aria-label="delete advert">
+                        <FiDelete color="red" />
+                      </IconButton>
+                    </HStack>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+            <Tfoot>
+              <Tr>
+                <Th>#</Th>
+                <Th>Image</Th>
+                <Th>name</Th>
+                <Th>email</Th>
+                <Th>account balance</Th>
+                <Th>Date Created</Th>
+                <Th>Options</Th>
+              </Tr>
+            </Tfoot>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Text>No data to show!</Text>
+      )}
     </Box>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  try {
+    const { data } = await (
+      await fetch("http://localhost:3001/admin/farmers")
+    ).json();
+
+    return {
+      props: {
+        data,
+      },
+    };
+  } catch (error) {
+    return { props: { data: [] } };
+  }
 };
 
 export default Farmers;

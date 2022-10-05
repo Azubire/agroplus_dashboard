@@ -18,35 +18,40 @@ import {
   FiTrendingUp,
   FiUsers,
 } from "react-icons/fi";
+import { GetServerSideProps } from "next";
 
-const data = [
-  {
-    title: "Current Users",
-    value: 12,
-    to: "/farmers",
-    icon: <FiUsers color="white" size={25} />,
-  },
-  {
-    title: "Number Of Adverts",
-    value: 120,
-    to: "/ads",
-    icon: <FiTrendingUp color="white" size={25} />,
-  },
-  {
-    title: "Number Of Distributors",
-    value: 120,
-    to: "/distributors",
-    icon: <FiCompass color="white" size={25} />,
-  },
-  {
-    title: "Total Orders",
-    value: 120,
-    to: "/orders",
-    icon: <FiShoppingCart color="white" size={25} />,
-  },
-];
+interface IHome {
+  data: {
+    id: number;
+    title: string;
+    value: number | null;
+    to: string;
+  }[];
+}
 
-export default function Home() {
+export default function Home({ data }: IHome) {
+  const renderIcon = (id: number) => {
+    let icon;
+    switch (id) {
+      case 1:
+        icon = <FiUsers color="white" size={25} />;
+        break;
+      case 2:
+        icon = <FiTrendingUp color="white" size={25} />;
+        break;
+      case 3:
+        icon = <FiCompass color="white" size={25} />;
+        break;
+      case 4:
+        icon = <FiShoppingCart color="white" size={25} />;
+        break;
+
+      default:
+        <FiCompass color="white" size={25} />;
+        break;
+    }
+    return icon;
+  };
   return (
     <Box maxW="container.xl" mx="auto">
       <Head>
@@ -55,32 +60,30 @@ export default function Home() {
 
       <SimpleGrid columns={{ base: 2, lg: 4 }} spacing={2}>
         {data.map((item, index) => (
-          <Link href={item.to} key={index}>
-            <Card height={150}>
-              <Text>{item.title}</Text>
-              <Text
-                fontSize="2xl"
-                fontWeight="extrabold"
-                bgGradient="linear(to-r,cyan.500,cyan.100)"
-                bgClip="text"
-              >
-                {item.value}
-              </Text>
-              <Flex
-                bgGradient="linear(to-r,cyan.500,cyan.300)"
-                w={51}
-                h={51}
-                borderRadius="full"
-                position="absolute"
-                bottom={2}
-                right={2}
-                justifyContent="center"
-                alignItems="center"
-              >
-                {item.icon}
-              </Flex>
-            </Card>
-          </Link>
+          <Card height={150} key={index}>
+            <Text>{item.title}</Text>
+            <Text
+              fontSize="2xl"
+              fontWeight="extrabold"
+              bgGradient="linear(to-r,cyan.500,cyan.100)"
+              bgClip="text"
+            >
+              {item.value}
+            </Text>
+            <Flex
+              bgGradient="linear(to-r,cyan.500,cyan.300)"
+              w={51}
+              h={51}
+              borderRadius="full"
+              position="absolute"
+              bottom={2}
+              right={2}
+              justifyContent="center"
+              alignItems="center"
+            >
+              {renderIcon(item.id)}
+            </Flex>
+          </Card>
         ))}
       </SimpleGrid>
       <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={2} mt={5}>
@@ -99,31 +102,20 @@ export default function Home() {
           <Text></Text>
         </Card>
       </SimpleGrid>
-      <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={2} mt={5}>
-        <Card height={250}>
-          <Text></Text>
-        </Card>
-        <Card height={250}>
-          <Text></Text>
-        </Card>
-      </SimpleGrid>
-      <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={2} mt={5}>
-        <Card height={250}>
-          <Text></Text>
-        </Card>
-        <Card height={250}>
-          <Text></Text>
-        </Card>
-      </SimpleGrid>
-      <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={2} mt={5}>
-        <Card height={250}>
-          <Text></Text>
-        </Card>
-        <Card height={250}>
-          <Text></Text>
-        </Card>
-      </SimpleGrid>
-      <Box></Box>
     </Box>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  try {
+    const { data } = await (
+      await fetch("http://localhost:3001/admin/metrics")
+    ).json();
+
+    return {
+      props: { data },
+    };
+  } catch (error) {
+    return { props: {} };
+  }
+};

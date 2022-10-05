@@ -34,7 +34,7 @@ const Distributors: NextPage<IDistributors> = ({ data }) => {
   return (
     <Box>
       <TableContainer>
-        <Table variant="simple">
+        <Table variant="simple" size="sm">
           <TableCaption>List of all distributors</TableCaption>
           <Thead>
             <Tr>
@@ -99,15 +99,16 @@ const Distributors: NextPage<IDistributors> = ({ data }) => {
 export const getServerSideProps: GetServerSideProps = async () => {
   try {
     const { data } = await (
-      await fetch("https://localhost:3001/admin/distributors")
+      await fetch("http://localhost:3001/admin/distributors")
     ).json();
-    console.log(data);
+    // console.log(data);
     return {
       props: {
         data,
       },
     };
   } catch (error) {
+    // console.log(error);
     return {
       props: {},
     };
