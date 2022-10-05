@@ -13,39 +13,27 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { GetServerSideProps, NextPage } from "next";
+import Image from "next/image";
 import React from "react";
 import { FiDelete } from "react-icons/fi";
 
 interface IAds {
-  id: number;
-  title: string;
-  price: number;
-  img: string;
-  createdAt: string;
-  User: {
-    fullname: string;
-  };
-  Category: {
-    name: string;
-  };
+  data: {
+    id: number;
+    title: string;
+    price: number;
+    img: string;
+    createdAt: string;
+    User: {
+      fullname: string;
+    };
+    Category: {
+      name: string;
+    };
+  }[];
 }
 
-const Ads: NextPage<IAds> = (props) => {
-  console.log(props);
-
-  const get = async () => {
-    try {
-      const data = await fetch("http://localhost:3001/admin/ads");
-      console.log(data.json());
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
-
-  React.useEffect(() => {
-    get();
-  }, []);
-
+const Ads: NextPage<IAds> = ({ data }) => {
   return (
     <Box>
       <TableContainer>
@@ -65,22 +53,31 @@ const Ads: NextPage<IAds> = (props) => {
             </Tr>
           </Thead>
           <Tbody>
-            <Tr>
-              <Td>1</Td>
-              <Td>img</Td>
-              <Td>Crop for sale</Td>
-              <Td>Ghc. 205</Td>
-              <Td>Azubire</Td>
-              <Td>Cereal</Td>
-              <Td>02 Oct 2022</Td>
-              <Td>
-                <HStack justifyContent="center">
-                  <IconButton aria-label="delete advert">
-                    <FiDelete color="red" />
-                  </IconButton>
-                </HStack>
-              </Td>
-            </Tr>
+            {data.map((item, index) => (
+              <Tr key={item.id}>
+                <Td>{index + 1}</Td>
+                <Td>
+                  <Image
+                    src={`http://localhost:3001/images/ads/${item.img}`}
+                    alt={item.title}
+                    height={40}
+                    width={40}
+                  />
+                </Td>
+                <Td>{item.title}</Td>
+                <Td>{item.price}</Td>
+                <Td>{item.User.fullname}</Td>
+                <Td>{item.Category.name}</Td>
+                <Td>{item.createdAt}</Td>
+                <Td>
+                  <HStack justifyContent="center">
+                    <IconButton aria-label="delete advert">
+                      <FiDelete color="red" />
+                    </IconButton>
+                  </HStack>
+                </Td>
+              </Tr>
+            ))}
           </Tbody>
           <Tfoot>
             <Tr>
@@ -102,20 +99,19 @@ const Ads: NextPage<IAds> = (props) => {
 export default Ads;
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  console.log("first");
   try {
-    const data = await fetch("http://localhost:3001/admin/ads");
-    console.log(data.json());
+    const { data } = await (
+      await fetch("http://localhost:3001/admin/ads")
+    ).json();
+    // console.log(data);
 
     return {
       props: { data },
     };
   } catch (error) {
-    console.log("error", error);
+    // console.log("error", error);
     return {
-      props: {
-        // data:{name:"sas"}
-      },
+      props: {},
     };
   }
 };

@@ -20,8 +20,11 @@ interface IOrders {
   data: {
     index: number;
     orderCode: string;
-    Distributor: {
-      name: string;
+    User: {
+      id: number;
+      Distributor: {
+        name: string;
+      };
     };
     grandTotal: number;
     paymentType: "account" | "momo";

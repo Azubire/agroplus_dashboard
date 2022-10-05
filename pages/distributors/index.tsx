@@ -12,7 +12,8 @@ import {
   IconButton,
   Tfoot,
 } from "@chakra-ui/react";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
+import Image from "next/image";
 import React from "react";
 import { FiDelete } from "react-icons/fi";
 
@@ -26,7 +27,7 @@ interface IDistributors {
     location: string;
     status: string;
     createdAt: string;
-  };
+  }[];
 }
 
 const Distributors: NextPage<IDistributors> = ({ data }) => {
@@ -49,23 +50,32 @@ const Distributors: NextPage<IDistributors> = ({ data }) => {
             </Tr>
           </Thead>
           <Tbody>
-            <Tr>
-              <Td>1</Td>
-              <Td>img</Td>
-              <Td>Agro Plus</Td>
-              <Td>agroplus@gmail.com</Td>
-              <Td>www.agroplus.org</Td>
-              <Td>Koforidua</Td>
-              <Td>Verified</Td>
-              <Td>02 Oct 2022</Td>
-              <Td>
-                <HStack justifyContent="center">
-                  <IconButton aria-label="delete advert">
-                    <FiDelete color="red" />
-                  </IconButton>
-                </HStack>
-              </Td>
-            </Tr>
+            {data.map((item, index) => (
+              <Tr key={item.id}>
+                <Td>{index + 1}</Td>
+                <Td>
+                  <Image
+                    src={`http://localhost:3001/images/distributors/${item.img}`}
+                    alt={item.name}
+                    height={40}
+                    width={40}
+                  />
+                </Td>
+                <Td>{item.name}</Td>
+                <Td>{item.email}</Td>
+                <Td>{item.website}</Td>
+                <Td>{item.location}</Td>
+                <Td>{item.status}</Td>
+                <Td>{item.createdAt}</Td>
+                <Td>
+                  <HStack justifyContent="center">
+                    <IconButton aria-label="delete advert">
+                      <FiDelete color="red" />
+                    </IconButton>
+                  </HStack>
+                </Td>
+              </Tr>
+            ))}
           </Tbody>
           <Tfoot>
             <Tr>
@@ -84,6 +94,24 @@ const Distributors: NextPage<IDistributors> = ({ data }) => {
       </TableContainer>
     </Box>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  try {
+    const { data } = await (
+      await fetch("https://localhost:3001/admin/distributors")
+    ).json();
+    console.log(data);
+    return {
+      props: {
+        data,
+      },
+    };
+  } catch (error) {
+    return {
+      props: {},
+    };
+  }
 };
 
 export default Distributors;
