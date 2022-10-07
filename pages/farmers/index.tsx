@@ -21,7 +21,7 @@ import { FiDelete } from "react-icons/fi";
 interface IFarmers {
   data: {
     id: number;
-    name: string;
+    fullname: string;
     img: string;
     email: string;
     accountBalance: number;
@@ -65,12 +65,12 @@ const Farmers: NextPage<IFarmers> = ({ data }) => {
                   <Td>
                     <Image
                       src={`http://localhost:3001/images/users/${item.img}`}
-                      alt={item.name}
+                      alt={item.fullname}
                       height={40}
                       width={40}
                     />
                   </Td>
-                  <Td>{item.name}</Td>
+                  <Td>{item.fullname}</Td>
                   <Td>{item.email}</Td>
                   <Td>{item.accountBalance}</Td>
                   <Td>{item.createdAt}</Td>
