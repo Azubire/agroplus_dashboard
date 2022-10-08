@@ -6,14 +6,7 @@ import {
   DrawerContent,
   useDisclosure,
 } from "@chakra-ui/react";
-import {
-  FiHome,
-  FiTrendingUp,
-  FiCompass,
-  FiStar,
-  FiSettings,
-} from "react-icons/fi";
-import { IconType } from "react-icons";
+
 import SideBar from "../SideBar";
 import MobileNavBar from "../MobileNavBar";
 

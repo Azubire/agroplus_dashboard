@@ -16,6 +16,7 @@ import { GetServerSideProps, NextPage } from "next";
 import Image from "next/image";
 import React from "react";
 import { FiDelete } from "react-icons/fi";
+import { baseUrl } from "../utils/helpers";
 
 interface IAds {
   data: {
@@ -39,7 +40,7 @@ const Ads: NextPage<IAds> = ({ data }) => {
   const deleteAd = async (id: number) => {
     try {
       const { data } = await (
-        await fetch(`http://localhost:3001/admin/ad/delete/${id}`, {
+        await fetch(`${baseUrl}/admin/ad/delete/${id}`, {
           method: "delete",
         })
       ).json();
@@ -75,7 +76,7 @@ const Ads: NextPage<IAds> = ({ data }) => {
                 <Td>{index + 1}</Td>
                 <Td>
                   <Image
-                    src={`http://localhost:3001/images/ads/${item.img}`}
+                    src={`${baseUrl}/images/ads/${item.img}`}
                     alt={item.title}
                     height={40}
                     width={40}
@@ -120,9 +121,7 @@ export default Ads;
 
 export const getServerSideProps: GetServerSideProps = async () => {
   try {
-    const { data } = await (
-      await fetch("http://localhost:3001/admin/ads")
-    ).json();
+    const { data } = await (await fetch(`${baseUrl}/admin/ads`)).json();
     // console.log(data);
 
     return {

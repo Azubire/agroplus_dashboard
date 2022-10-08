@@ -11,14 +11,9 @@ import {
   FiHome,
   FiTrendingUp,
   FiCompass,
-  FiStar,
-  FiSettings,
   FiDollarSign,
   FiUsers,
   FiShoppingCart,
-  FiMenu,
-  FiBell,
-  FiChevronDown,
 } from "react-icons/fi";
 import { IconType } from "react-icons";
 import NavItem from "./NavItem";

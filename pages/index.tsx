@@ -1,8 +1,7 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import { Box, Flex, SimpleGrid, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import Card from "../components/Card";
-import Link from "next/link";
 import {
   FiCompass,
   FiShoppingCart,
@@ -23,7 +22,7 @@ import {
 } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { Bar } from "react-chartjs-2";
-import { IOrders } from "./orders";
+import { baseUrl } from "./utils/helpers";
 
 ChartJS.register(
   ArcElement,
@@ -183,9 +182,7 @@ export default function Home({ data }: IHome) {
 
 export const getServerSideProps: GetServerSideProps = async () => {
   try {
-    const { data } = await (
-      await fetch("http://localhost:3001/admin/metrics")
-    ).json();
+    const { data } = await (await fetch(`${baseUrl}/admin/metrics`)).json();
 
     return {
       props: { data },

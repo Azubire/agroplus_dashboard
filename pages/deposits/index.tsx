@@ -25,6 +25,7 @@ import {
 import { GetServerSideProps, NextPage } from "next";
 import React from "react";
 import { FiDelete, FiEdit } from "react-icons/fi";
+import { baseUrl } from "../utils/helpers";
 
 export interface IOrders {
   data: {
@@ -49,7 +50,7 @@ const Deposits: NextPage<IOrders> = ({ data }) => {
   const deleteOrder = async (id: number) => {
     try {
       const { data } = await (
-        await fetch(`http://localhost:3001/admin/order/delete/${id}`, {
+        await fetch(`${baseUrl}/admin/order/delete/${id}`, {
           method: "delete",
         })
       ).json();
@@ -61,7 +62,7 @@ const Deposits: NextPage<IOrders> = ({ data }) => {
     setLoading(true);
     try {
       const data = await (
-        await fetch(`http://localhost:3001/admin/deposit/update/${id}`, {
+        await fetch(`${baseUrl}/admin/deposit/update/${id}`, {
           method: "put",
           headers: {
             "Content-Type": "application/json",
@@ -191,7 +192,7 @@ const Deposits: NextPage<IOrders> = ({ data }) => {
 export const getServerSideProps: GetServerSideProps = async () => {
   try {
     const { data } = await (
-      await fetch("http://localhost:3001/admin/transactions")
+      await fetch(`${baseUrl}/admin/transactions`)
     ).json();
 
     return {

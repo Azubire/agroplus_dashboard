@@ -17,6 +17,7 @@ import { GetServerSideProps, NextPage } from "next";
 import Image from "next/image";
 import React from "react";
 import { FiDelete } from "react-icons/fi";
+import { baseUrl } from "../utils/helpers";
 
 interface IFarmers {
   data: {
@@ -33,7 +34,7 @@ const Farmers: NextPage<IFarmers> = ({ data }) => {
   const deleteFarmer = async (id: number) => {
     try {
       const { data } = await (
-        await fetch(`http://localhost:3001/admin/farmer/delete/${id}`, {
+        await fetch(`${baseUrl}/admin/farmer/delete/${id}`, {
           method: "delete",
         })
       ).json();
@@ -64,7 +65,7 @@ const Farmers: NextPage<IFarmers> = ({ data }) => {
                   <Td>{index + 1}</Td>
                   <Td>
                     <Image
-                      src={`http://localhost:3001/images/users/${item.img}`}
+                      src={`${baseUrl}/images/users/${item.img}`}
                       alt={item.fullname}
                       height={40}
                       width={40}
@@ -109,9 +110,7 @@ const Farmers: NextPage<IFarmers> = ({ data }) => {
 
 export const getServerSideProps: GetServerSideProps = async () => {
   try {
-    const { data } = await (
-      await fetch("http://localhost:3001/admin/farmers")
-    ).json();
+    const { data } = await (await fetch(`${baseUrl}/admin/farmers`)).json();
 
     return {
       props: {

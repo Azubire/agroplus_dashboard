@@ -16,6 +16,7 @@ import {
 import { GetServerSideProps, NextPage } from "next";
 import React from "react";
 import { FiDelete } from "react-icons/fi";
+import { baseUrl } from "../utils/helpers";
 
 export interface IOrders {
   data: {
@@ -39,7 +40,7 @@ const Orders: NextPage<IOrders> = ({ data }) => {
   const deleteOrder = async (id: number) => {
     try {
       const { data } = await (
-        await fetch(`http://localhost:3001/admin/order/delete/${id}`, {
+        await fetch(`${baseUrl}/admin/order/delete/${id}`, {
           method: "delete",
         })
       ).json();
@@ -113,9 +114,7 @@ const Orders: NextPage<IOrders> = ({ data }) => {
 };
 export const getServerSideProps: GetServerSideProps = async () => {
   try {
-    const { data } = await (
-      await fetch("http://localhost:3001/admin/orders")
-    ).json();
+    const { data } = await (await fetch(`${baseUrl}/admin/orders`)).json();
 
     return {
       props: {
