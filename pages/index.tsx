@@ -22,7 +22,7 @@ import {
 } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { Bar } from "react-chartjs-2";
-import { baseUrl } from "./utils/helpers";
+import baseUrl from "./utils/helpers";
 
 ChartJS.register(
   ArcElement,
@@ -183,7 +183,7 @@ export default function Home({ data }: IHome) {
 export const getServerSideProps: GetServerSideProps = async () => {
   try {
     const { data } = await (await fetch(`${baseUrl}/admin/metrics`)).json();
-
+    console.log(data);
     return {
       props: { data },
     };
