@@ -25,7 +25,7 @@ import {
 import { GetServerSideProps, NextPage } from "next";
 import React from "react";
 import { FiDelete, FiEdit } from "react-icons/fi";
-import { baseUrl } from "../utils/helpers";
+import baseUrl from "../utils/helpers";
 
 export interface IOrders {
   data: {
