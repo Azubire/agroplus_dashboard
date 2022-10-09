@@ -16,7 +16,7 @@ import { GetServerSideProps, NextPage } from "next";
 import Image from "next/image";
 import React from "react";
 import { FiDelete } from "react-icons/fi";
-import baseUrl from "../utils/helpers";
+import { baseUrl } from "../../app/utils/helper";
 
 interface IDistributors {
   data: {

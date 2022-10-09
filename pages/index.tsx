@@ -22,7 +22,7 @@ import {
 } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { Bar } from "react-chartjs-2";
-import baseUrl from "./utils/helpers";
+import { baseUrl } from "../app/utils/helper";
 
 ChartJS.register(
   ArcElement,
