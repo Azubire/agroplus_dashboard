@@ -11,6 +11,7 @@ import {
   Tfoot,
   HStack,
   IconButton,
+  Text,
 } from "@chakra-ui/react";
 import { GetServerSideProps, NextPage } from "next";
 import Image from "next/image";
@@ -54,65 +55,69 @@ const Ads: NextPage<IAds> = ({ data }) => {
   React.useEffect(() => {}, [refresh]);
   return (
     <Box>
-      <TableContainer>
-        <Table variant="simple" size="sm">
-          <TableCaption>List of all orders</TableCaption>
-          <Thead>
-            <Tr>
-              <Th>#</Th>
-              <Th>Image</Th>
-              <Th>Title</Th>
-              <Th>Price</Th>
-              <Th>Farmer</Th>
-              <Th>Category</Th>
-              <Th>Date Created</Th>
-              <Th>Options</Th>
-              {/* <Th isNumeric>multiply by</Th> */}
-            </Tr>
-          </Thead>
-          <Tbody>
-            {data.map((item, index) => (
-              <Tr key={item.id}>
-                <Td>{index + 1}</Td>
-                <Td>
-                  <Image
-                    src={`${baseUrl}/images/ads/${item.img}`}
-                    alt={item.title}
-                    height={40}
-                    width={40}
-                  />
-                </Td>
-                <Td>{item.title}</Td>
-                <Td>{item.price}</Td>
-                <Td>{item.User.fullname}</Td>
-                <Td>{item.Category.name}</Td>
-                <Td>{item.createdAt}</Td>
-                <Td>
-                  <HStack justifyContent="center">
-                    <IconButton
-                      aria-label="delete advert"
-                      onClick={() => deleteAd(item.id)}
-                    >
-                      <FiDelete color="red" />
-                    </IconButton>
-                  </HStack>
-                </Td>
+      {data?.length > 0 ? (
+        <TableContainer>
+          <Table variant="simple" size="sm">
+            <TableCaption>List of all orders</TableCaption>
+            <Thead>
+              <Tr>
+                <Th>#</Th>
+                <Th>Image</Th>
+                <Th>Title</Th>
+                <Th>Price</Th>
+                <Th>Farmer</Th>
+                <Th>Category</Th>
+                <Th>Date Created</Th>
+                <Th>Options</Th>
+                {/* <Th isNumeric>multiply by</Th> */}
               </Tr>
-            ))}
-          </Tbody>
-          <Tfoot>
-            <Tr>
-              <Th>#</Th>
-              <Th>Image</Th>
-              <Th>Title</Th>
-              <Th>Farmer</Th>
-              <Th>Category</Th>
-              <Th>Date Created</Th>
-              <Th>Options</Th>
-            </Tr>
-          </Tfoot>
-        </Table>
-      </TableContainer>
+            </Thead>
+            <Tbody>
+              {data.map((item, index) => (
+                <Tr key={item.id}>
+                  <Td>{index + 1}</Td>
+                  <Td>
+                    <Image
+                      src={`${baseUrl}/images/ads/${item.img}`}
+                      alt={item.title}
+                      height={40}
+                      width={40}
+                    />
+                  </Td>
+                  <Td>{item.title}</Td>
+                  <Td>{item.price}</Td>
+                  <Td>{item.User.fullname}</Td>
+                  <Td>{item.Category.name}</Td>
+                  <Td>{item.createdAt}</Td>
+                  <Td>
+                    <HStack justifyContent="center">
+                      <IconButton
+                        aria-label="delete advert"
+                        onClick={() => deleteAd(item.id)}
+                      >
+                        <FiDelete color="red" />
+                      </IconButton>
+                    </HStack>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+            <Tfoot>
+              <Tr>
+                <Th>#</Th>
+                <Th>Image</Th>
+                <Th>Title</Th>
+                <Th>Farmer</Th>
+                <Th>Category</Th>
+                <Th>Date Created</Th>
+                <Th>Options</Th>
+              </Tr>
+            </Tfoot>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Text>No data to show</Text>
+      )}
     </Box>
   );
 };

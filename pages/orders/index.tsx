@@ -72,7 +72,7 @@ const Orders: NextPage<IOrders> = ({ data }) => {
                 <Tr key={item.id}>
                   <Td>{index + 1}</Td>
                   <Td>{item.orderCode}</Td>
-                  <Td>{item.User.Distributor.name}</Td>
+                  <Td>{item.User?.Distributor?.name}</Td>
                   <Td>{item.grandTotal}</Td>
                   <Td>{item.paymentType}</Td>
                   <Td>{item.paymentStatus}</Td>
